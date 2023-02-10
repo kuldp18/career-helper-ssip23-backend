@@ -2,6 +2,9 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 8888;
 
@@ -16,6 +19,14 @@ mongoose
   .then(() => {
     console.log('DB CONNECTED successfully!');
   });
+
+// global middlewares
+
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send('backend is running!');
