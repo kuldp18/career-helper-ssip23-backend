@@ -8,6 +8,10 @@ const cors = require('cors');
 
 const PORT = process.env.PORT || 8888;
 
+// routes
+const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
+
 // DB Connection
 mongoose.set('strictQuery', true);
 
@@ -27,6 +31,10 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// routes
+app.use('/api', userRoutes);
+app.use('/api', authRoutes);
 
 app.get('/', (req, res) => {
   res.send('backend is running!');
