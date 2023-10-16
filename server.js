@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 8888;
 // routes
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
+const careerRoutes = require('./routes/career');
 
 // DB Connection
 mongoose.set('strictQuery', true);
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 app.use('/api', userRoutes);
 app.use('/api', authRoutes);
+app.use('/api', careerRoutes);
 
 app.get('/', (req, res) => {
   res.send('backend is running!');

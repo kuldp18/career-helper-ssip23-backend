@@ -80,9 +80,25 @@ exports.isSignedIn = expressJwt({
 
 // custom middlewares
 exports.isAuthenticated = (req, res, next) => {
-  let checker = req.profile && req.auth && req.profile._id == req.auth._id;
-  if (!checker) return res.status(403).json({ error: 'Access denied' });
-  next();
+  // check if user is authenticated
+  // check local storage for token
+  let token = req.cookies.token;
+  if (!token) {
+    return res.status(403).json({
+      error: 'Access denied! Please sign in first',
+    });
+  }
+  // verify token
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({
+        error: 'Access denied! Please sign in first',
+      });
+    }
+    // add user id to request object
+    req.profile = decoded;
+    next();
+  });
 };
 
 exports.isAdmin = (req, res, next) => {
